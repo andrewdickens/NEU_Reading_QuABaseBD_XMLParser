@@ -1,0 +1,106 @@
+package Parser;//STEP 1. Import required packages
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class SQLDatabase {
+		// JDBC driver name and database URL
+		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+		static final String DB_URL = "jdbc:mysql://localhost/";
+
+		//  SQLDatabase credentials
+		static final String USER = "root";
+		static final String PASS = "andrew";
+
+		public static void createDatabase(String databaseName){
+				Connection conn = null;
+				Statement stmt = null;
+				try{
+						//STEP 2: Register JDBC driver
+						Class.forName(JDBC_DRIVER);
+
+						//STEP 3: Open a connection
+						System.out.println("Connecting to database...");
+						conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+						//STEP 4: Execute a query
+						System.out.println("Creating database...");
+						stmt = conn.createStatement();
+
+						StringBuilder sqlString = new StringBuilder();
+						sqlString.append("CREATE").append(" ").append("DATABASE").append(" ").append(databaseName);
+
+						String sql = sqlString.toString();
+
+						stmt.executeUpdate(sql);
+						System.out.println("SQLDatabase created successfully...");
+				}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+				}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+				}finally{
+						//finally block used to close resources
+						try{
+								if(stmt!=null)
+										stmt.close();
+						}catch(SQLException se2){
+						}// nothing we can do
+						try{
+								if(conn!=null)
+										conn.close();
+						}catch(SQLException se){
+								se.printStackTrace();
+						}//end finally try
+				}//end try
+				System.out.println("Goodbye!");
+		}//end ParserMain
+
+		public static void deleteDatabase(String databaseName){
+				Connection conn = null;
+				Statement stmt = null;
+				try{
+						//STEP 2: Register JDBC driver
+						Class.forName(JDBC_DRIVER);
+
+						//STEP 3: Open a connection
+						System.out.println("Connecting to database...");
+						conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+						//STEP 4: Execute a query
+						System.out.println("deleting database...");
+						stmt = conn.createStatement();
+
+						StringBuilder sqlString = new StringBuilder();
+						sqlString.append("DROP").append(" ").append("DATABASE").append(" ").append(databaseName);
+
+						String sql = sqlString.toString();
+
+						stmt.executeUpdate(sql);
+						System.out.println("SQLDatabase deleted successfully...");
+				}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+				}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+				}finally{
+						//finally block used to close resources
+						try{
+								if(stmt!=null)
+										stmt.close();
+						}catch(SQLException se2){
+						}// nothing we can do
+						try{
+								if(conn!=null)
+										conn.close();
+						}catch(SQLException se){
+								se.printStackTrace();
+						}//end finally try
+				}//end try
+				System.out.println("Goodbye!");
+		}//end ParserMain
+
+}//end JDBCExample
